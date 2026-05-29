@@ -19,6 +19,7 @@ return new class extends Migration
             $table->time('check_out')->nullable();
             $table->decimal('latitude', 8, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
+            $table->enum('status', ['hadir', 'belum_checkout'])->default('belum_checkout');
             $table->timestamps();
         });
     }
