@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Helpers\Enum\RoleEnum;
+use App\Http\Controllers\JournalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/check-in', [AttendanceController::class, 'checkIn']);
             Route::post('/check-out', [AttendanceController::class, 'checkOut']);
         });
+
+        Route::apiResource('journals', JournalController::class);
     });
 
 });

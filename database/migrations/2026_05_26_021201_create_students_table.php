@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('internship_id')->constrained('internship')->onDelete('cascade');
             $table->string('nis', 10);
             $table->string('class');
+            $table->string('major');
             $table->string('phone', 12);
             $table->text('address');
             $table->timestamps();
