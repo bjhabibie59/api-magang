@@ -2,11 +2,13 @@
 
 namespace App\Interfaces;
 
-interface BaseInterface
+use App\Interfaces\Base\CreateInterface;
+use App\Interfaces\Base\DeleteInterface;
+use App\Interfaces\Base\FindInterface;
+use App\Interfaces\Base\GetAllInterface;
+use App\Interfaces\Base\UpdateInterface;
+
+interface BaseInterface extends CreateInterface, DeleteInterface, FindInterface, GetAllInterface, UpdateInterface
 {
-    public function findAll(array $relations = []);
-    public function findById(string $id, array $relations = []);
-    public function create(array $data);
-    public function update(string $id, array $data);
-    public function delete(string $id): bool;
+    
 }

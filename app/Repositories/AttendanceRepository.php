@@ -12,11 +12,11 @@ class AttendanceRepository extends BaseRepository implements AttendanceInterface
         parent::__construct($model);
     }
 
-    public function findByStudentAndDate(string $studentId, string $date)
+    public function findTodayByStudent(string $studentId)
     {
         return $this->model
             ->where('student_id', $studentId)
-            ->whereDate('date', $date)
+            ->whereDate('date', today())
             ->first();
     }
 
@@ -27,12 +27,5 @@ class AttendanceRepository extends BaseRepository implements AttendanceInterface
             ->where('student_id', $studentId)
             ->orderByDesc('date')
             ->get();
-    }
-
-    public function checkOut(string $id, array $data)
-    {
-        $record = $this->findById($id);
-        $record->update($data);
-        return $record->fresh();
     }
 }

@@ -9,7 +9,7 @@ class BaseRepository implements BaseInterface
 {
     public function __construct(protected Model $model) {}
 
-    public function findAll(array $relations = [])
+    public function getAll(array $relations = [])
     {
         return $this->model->with($relations)->get();
     }

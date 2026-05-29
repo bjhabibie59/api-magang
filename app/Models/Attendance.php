@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Enum\AttendanceStatusEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,9 +11,11 @@ class Attendance extends Model
 {
     use HasUuids;
 
+    protected $table = 'attendance';
+
     protected $fillable = [
         'student_id', 'date', 'check_in',
-        'check_out', 'latitude', 'longitude',
+        'check_out', 'latitude', 'longitude', 'status',
     ];
 
     protected function casts(): array
@@ -21,6 +24,7 @@ class Attendance extends Model
             'date'      => 'date',
             'check_in'  => 'datetime:H:i:s',
             'check_out' => 'datetime:H:i:s',
+            'status'    => AttendanceStatusEnum::class
         ];
     }
 

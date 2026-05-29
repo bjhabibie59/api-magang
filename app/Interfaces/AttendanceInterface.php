@@ -2,9 +2,13 @@
 
 namespace App\Interfaces;
 
-interface AttendanceInterface extends BaseInterface
+use App\Interfaces\Base\CreateInterface;
+use App\Interfaces\Base\FindInterface;
+use App\Interfaces\Base\GetAllInterface;
+use App\Interfaces\Base\UpdateInterface;
+
+interface AttendanceInterface extends CreateInterface, FindInterface, GetAllInterface, UpdateInterface
 {
-    public function findByStudentAndDate(string $studentId, string $date);
+    public function findTodayByStudent(string $studentId);
     public function findByStudent(string $studentId, array $relations = []);
-    public function checkOut(string $id, array $data);
 }
