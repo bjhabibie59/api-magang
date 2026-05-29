@@ -31,7 +31,7 @@ class GeoHelper
     public static function isWithinRadius(
         float $lat1, float $lon1,
         float $lat2, float $lon2,
-        float $radiusInMeters = 100
+        float $radiusInMeters = 50
     ): bool {
         return self::distanceInMeters($lat1, $lon1, $lat2, $lon2) <= $radiusInMeters;
     }

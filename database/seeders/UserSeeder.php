@@ -75,7 +75,8 @@ class UserSeeder extends Seeder
             'user_id'        => $studentUser->id,
             'internship_id'  => $internship->id,
             'nis'            => '0012345678',
-            'class'          => 'XII RPL 1',
+            'class'          => 'XII',
+            'major'          => 'RPl 1',
             'phone'          => '089876543210',
             'address'        => 'Jl. Melati No. 45, Surabaya',
         ]);

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Api;
 use App\Http\Handlers\AttendanceHandler;
+use App\Http\Requests\Attendance\CheckInRequest;
+use App\Http\Requests\Attendance\CheckOutRequest;
+use App\Http\Resources\AttendanceResource;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -12,43 +15,33 @@ class AttendanceController extends Controller
         private readonly AttendanceHandler $handler
     ) {}
 
-    public function checkIn(Request $request)
-    {
-        $validated = $request->validate([
-            'latitude'  => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
-        ]);
-
-        $attendance = $this->handler->checkIn($validated, $request->user());
-
-        return Api::created(
-            data: $attendance,
-            message: 'Check-in berhasil'
-        );
-    }
-
-    public function checkOut(Request $request)
-    {
-        $validated = $request->validate([
-            'latitude'  => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
-        ]);
-
-        $attendance = $this->handler->checkOut($validated, $request->user());
-
-        return Api::success(
-            data: $attendance,
-            message: 'Check-out berhasil'
-        );
-    }
-
     public function index(Request $request)
     {
         $attendances = $this->handler->myAttendance($request->user());
 
         return Api::success(
-            data: $attendances,
+            data: AttendanceResource::collection($attendances),
             message: 'Data absensi berhasil diambil'
+        );
+    }
+
+    public function checkIn(CheckInRequest $request)
+    {
+        $attendance = $this->handler->checkIn($request->validated(), $request->user());
+
+        return Api::created(
+            data: new AttendanceResource($attendance),
+            message: 'Check-in berhasil'
+        );
+    }
+
+    public function checkOut(CheckOutRequest $request)
+    {
+        $attendance = $this->handler->checkOut($request->validated(), $request->user());
+
+        return Api::success(
+            data: new AttendanceResource($attendance),
+            message: 'Check-out berhasil'
         );
     }
 }

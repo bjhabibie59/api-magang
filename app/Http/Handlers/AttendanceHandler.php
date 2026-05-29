@@ -11,7 +11,7 @@ use App\Helpers\Api;
 class AttendanceHandler
 {
     // Radius maksimal dari lokasi internship dalam meter
-    private const ALLOWED_RADIUS = 100;
+    private const ALLOWED_RADIUS = 50;
 
     public function __construct(
         private readonly AttendanceInterface $attendanceRepository
@@ -19,8 +19,17 @@ class AttendanceHandler
 
     public function checkIn(array $data, $user): mixed
     {
+        $user->loadMissing(['student.insternship']);
+
         $student    = $user->student;
         $internship = $student->internship;
+
+        if (!$internship) {
+            throw new HttpResponseException(
+                Api::error('Data internship tidak ditemukan', 404)
+            );
+
+        }
 
         // Validasi radius
         $isWithin = GeoHelper::isWithinRadius(

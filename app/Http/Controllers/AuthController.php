@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Api;
-use App\Http\Handlers\AuthHandler;  // ← dikoreksi
+use App\Http\Handlers\AuthHandler;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -13,19 +15,14 @@ class AuthController extends Controller
         private readonly AuthHandler $handler
     ) {}
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validated = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
-
         try {
-            $result = $this->handler->login($validated);
+            $result = $this->handler->login($request->validated());
 
             return Api::success(
                 data: [
-                    'user'  => $result['user'],
+                    'user'  => new UserResource($result['user']),
                     'role'  => $result['role'],
                     'token' => $result['token'],
                 ],
@@ -51,7 +48,7 @@ class AuthController extends Controller
         $user = $this->handler->me($request->user());
 
         return Api::success(
-            data: $user,
+            data: new UserResource($user),
             message: 'Data profil berhasil diambil',
         );
     }
